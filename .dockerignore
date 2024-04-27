@@ -1,5 +1,14 @@
-.git
+.git*
+.dockerignore
+*.md
+Dockerfile*
+hooks
+build.conf
+.build_data
+arch.yaml
+build.sh
 .idea/
+screenshot*
 
 dashmachine/user_data/
 dashmachine/static/images/icons

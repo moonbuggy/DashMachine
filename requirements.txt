@@ -1,3 +1,8 @@
+# we get a "missing context" error from v3+
+Flask==2.3.3
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.52
+
 alembic
 aniso8601
 bcrypt
@@ -5,13 +10,11 @@ certifi
 cffi
 chardet
 Click
-Flask
 Flask-Bcrypt
 Flask-Caching
 Flask-Login
 Flask-RESTful
 Flask-Script
-Flask-SQLAlchemy
 Flask-WTF
 gunicorn
 htmlmin
@@ -28,7 +31,6 @@ python-editor
 pytz
 requests
 six
-SQLAlchemy
 urllib3
 Werkzeug
 WTForms

@@ -121,3 +121,10 @@ scheduler.db
 dashmachine/user_data/
 dashmachine/static/images/icons
 dashmachine/static/images/backgrounds
+
+.build_data
+__pycache__
+.imports
+lint.sh
+.qemu_static
+_dummyfile

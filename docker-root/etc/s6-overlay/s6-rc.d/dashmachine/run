@@ -1,0 +1,9 @@
+#! /usr/bin/with-contenv /bin/sh
+
+echo "path: ${PATH}"
+echo "app_path: ${APP_PATH}"
+pwd
+which python
+which gunicorn
+python -m gunicorn --bind 0.0.0.0:5000 --chdir "${APP_PATH}" wsgi:app
+#${VIRTUAL_ENV}/bin/gunicorn --bind 0.0.0.0:5000 --chdir "${APP_PATH}" wsgi:app
