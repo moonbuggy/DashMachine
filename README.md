@@ -15,7 +15,7 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-[![Donate](https://img.shields.io/badge/$-support-ff69b4.svg?style=flat)](https://liberapay.com/rmountjoy) 
+[![Donate](https://img.shields.io/badge/$-support-ff69b4.svg?style=flat)](https://liberapay.com/rmountjoy)
 ![Bountysource](https://img.shields.io/bountysource/team/dashmachine/activity)
 
 Want a feature added now? [Open a bounty](https://www.bountysource.com/teams/dashmachine-app)
@@ -51,6 +51,13 @@ docker create \
   --restart unless-stopped \
   rmountjoy/dashmachine:latest
 ```
+#### Environment variables
+*   `BIND_PORT`                   - default: 5000
+*   `GUNICORN_LOG_LEVEL`          - default: 'info'
+*   `GUNICORN_TIMEOUT`            - default: 30
+*   `GUNICORN_GRACEFUL_TIMEOUT`   - default: 30
+*   `TZ`                          - timezone, default: 'Etc/UTC'
+
 ### Synology
 Check out this awesome guide: https://nashosted.com/manage-your-self-hosted-applications-using-dashmachine/
 ### Python
@@ -74,7 +81,7 @@ Password: admin
 For python, use git. For docker, just pull the latest image and recreate the container.
 
 ## Configuration
-The user data folder is located at DashMachine/dashmachine/user_data. This is where the config.ini, custom backgrounds/icons, and the database file live. A reference for what can go into the config.ini file can be found on the settings page of the dashmachine by clicking the info icon next to 'Config'. 
+The user data folder is located at DashMachine/dashmachine/user_data. This is where the config.ini, custom backgrounds/icons, and the database file live. A reference for what can go into the config.ini file can be found on the settings page of the dashmachine by clicking the info icon next to 'Config'.
 
 ### Note
 If you change the config.ini file, you either have to restart the container (or python script) or click the 'save' button in the config section of settings for the config to be applied. Pictures added to the backgrounds/icons folders are available immediately.

@@ -1,9 +1,10 @@
-#! /usr/bin/with-contenv /bin/sh
+#!/usr/bin/with-contenv /bin/sh
+# shellcheck shell=sh
 
-echo "path: ${PATH}"
-echo "app_path: ${APP_PATH}"
-pwd
-which python
-which gunicorn
-python -m gunicorn --bind 0.0.0.0:5000 --chdir "${APP_PATH}" wsgi:app
-#${VIRTUAL_ENV}/bin/gunicorn --bind 0.0.0.0:5000 --chdir "${APP_PATH}" wsgi:app
+${VIRTUAL_ENV}/bin/gunicorn \
+  --bind 0.0.0.0:${BIND_PORT:-5000} \
+  --chdir ${APP_PATH} \
+  --log-level ${GUNICORN_LOG_LEVEL:-info} \
+  --timeout ${GUNICORN_TIMEOUT:-30} \
+  --graceful-timeout ${GUNICORN_GRACEFUL_TIMEOUT:-30} \
+  wsgi:app

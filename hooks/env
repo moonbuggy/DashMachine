@@ -264,8 +264,8 @@ py_required_version () {
 		modtag="${modtag/%[=<>]*/}"
 	else
 		case "${2}" in
-			'') requirements="$(cat requirements.txt 2>/dev/null)" ;;
-			*requirements.txt) requirements="$(cat "${2}" 2>/dev/null)" ;;
+			'') requirements="$(cat requirements.txt 2>/dev/null | grep -v '#')" ;;
+			*requirements.txt) requirements="$(cat "${2}" 2>/dev/null | grep -v '#')" ;;
 			*) requirements="${2}" ;;
 		esac
 	fi

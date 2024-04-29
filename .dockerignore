@@ -1,6 +1,5 @@
 .git*
 .dockerignore
-*.md
 Dockerfile*
 hooks
 build.conf
@@ -8,7 +7,6 @@ build.conf
 arch.yaml
 build.sh
 .idea/
-screenshot*
 
 dashmachine/user_data/
 dashmachine/static/images/icons

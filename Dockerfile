@@ -2,7 +2,7 @@
 # experimental syntax is required for 'COPY --exclude'
 
 ARG BUILD_PYTHON_VERSION="3.8"
-ARG FROM_IMAGE="moonbuggy2000/debian-slim-s6-python:${BUILD_PYTHON_VERSION}"
+ARG FROM_IMAGE="moonbuggy2000/alpine-s6-python:${BUILD_PYTHON_VERSION}"
 
 # ARG BUILDER_ROOT="/docker-root"
 ARG APP_PATH="/dashmachine"
@@ -20,7 +20,7 @@ RUN (mv /etc/pip.conf /etc/pip.conf.bak 2>/dev/null || true) \
     "  trusted-host = $(echo "${PYPI_INDEX}" | cut -d'/' -f3 | cut -d':' -f1)" \
     >/etc/pip.conf
 
-# enable virtual environment
+# install virtual environment
 ARG VIRTUAL_ENV
 RUN python -m pip install virtualenv \
   && python -m virtualenv "${VIRTUAL_ENV}"
@@ -34,7 +34,12 @@ COPY --exclude=docker-root . ./
 ENV VIRTUAL_ENV="${VIRTUAL_ENV}" \
   PATH="${VIRTUAL_ENV}/bin:$PATH"
 
-RUN pip install --no-cache-dir -r requirements.txt \
+# Python wheels from pre_build
+ARG TARGET_ARCH_TAG="amd64"
+ARG IMPORTS_DIR=".imports"
+COPY _dummyfile "${IMPORTS_DIR}/${TARGET_ARCH_TAG}*" "/${IMPORTS_DIR}/"
+
+RUN python3 -m pip install --no-cache-dir --find-links "/${IMPORTS_DIR}/" -r requirements.txt \
   && (mv -f /etc/pip.conf.bak /etc/pip.conf 2>/dev/null || true)
 
 COPY docker-root /docker-root
@@ -50,15 +55,15 @@ RUN add-contenv \
 #
 FROM "${FROM_IMAGE}"
 
-ARG APT_CACHE
-RUN export DEBIAN_FRONTEND="noninteractive" \
-  && if [ ! -z "${APT_CACHE}" ]; then \
-    echo "Acquire::http { Proxy \"${APT_CACHE}\"; }" > /etc/apt/apt.conf.d/proxy; fi \
-  && apt-get update \
-  && apt-get install --no-install-recommends -qy \
-    inetutils-ping \
-  && apt-get clean \
-  && (rm -f /etc/apt/apt.conf.d/proxy 2>/dev/null || true)
+ARG APK_PROXY
+RUN if [ ! -z "${APK_PROXY}" ]; then \
+    alpine_minor_ver="$(grep -o 'VERSION_ID.*' /etc/os-release | grep -oE '([0-9]+\.[0-9]+)')"; \
+    mv /etc/apk/repositories /etc/apk/repositories.bak; \
+		echo "${APK_PROXY}/alpine/v${alpine_minor_ver}/main" >/etc/apk/repositories; \
+		echo "${APK_PROXY}/alpine/v${alpine_minor_ver}/community" >>/etc/apk/repositories; \
+	fi \
+  && apk add --no-cache iputils-ping \
+  && mv -f /etc/apk/repositories.bak /etc/apk/repositories
 
 ARG APP_PATH
 COPY --from=builder "${APP_PATH}" "${APP_PATH}"
